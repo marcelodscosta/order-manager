@@ -18,4 +18,5 @@ export class Product {
 
     @ManyToOne(() => Category, category => category.product)
     category: Category;
+
 };
