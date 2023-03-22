@@ -20,5 +20,5 @@ export class Customer {
     password: string;
 
     @OneToMany(() => Order, (order) => order.customer)
-    order: Order;
+    order: Order[];
 };
