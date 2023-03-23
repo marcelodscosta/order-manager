@@ -30,4 +30,28 @@ export class CategoryController {
         const category = await service.findById(Number(id));
         return res.status(200).json(category);
     }
+
+    async update(req: Request, res: Response) {
+        const { id } = req.params;
+        const { description } = req.body;
+
+        const service = new CategoryService();
+
+        const updateCategory: ICategory = {
+            id: Number(id),
+            description
+        };
+
+        const update = await service.update(updateCategory);
+        res.status(201).json(update);
+    }
+
+    async delete(req: Request, res: Response) {
+        const { id } = req.params;
+
+        const service = new CategoryService();
+
+        const update = await service.delete(Number(id));
+        res.status(201).json(update);
+    }
 };

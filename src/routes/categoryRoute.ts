@@ -4,7 +4,11 @@ import { CategoryController } from "../controllers/CategoryController";
 
 export const categoryRoute = Router();
 
+const categoryController = new CategoryController();
 
-categoryRoute.post('/create', new CategoryController().create);
-categoryRoute.get('/', new CategoryController().findAll);
-categoryRoute.get('/:id', new CategoryController().findById);
+
+categoryRoute.post('/create', categoryController.create);
+categoryRoute.get('/', categoryController.findAll);
+categoryRoute.get('/:id', categoryController.findById);
+categoryRoute.put('/:id/update', categoryController.update);
+categoryRoute.put('/:id/delete', categoryController.delete);
