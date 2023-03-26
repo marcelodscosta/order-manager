@@ -16,6 +16,7 @@ export class Order {
     status: boolean;
 
     @ManyToOne(() => User, (user) => user.order)
+    @JoinColumn({ name: 'user_id' })
     user: User;
 
     @ManyToOne(() => Customer, (customer) => customer.order)
