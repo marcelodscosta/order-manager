@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Customer } from "./Customer";
 import { Product } from "./Product";
+import { User } from "./User";
 
 @Entity('orders')
 export class Order {
@@ -13,6 +14,9 @@ export class Order {
 
     @Column({ type: 'boolean' })
     status: boolean;
+
+    @ManyToOne(() => User, (user) => user.order)
+    user: User;
 
     @ManyToOne(() => Customer, (customer) => customer.order)
     @JoinColumn({ name: 'customer_id' })

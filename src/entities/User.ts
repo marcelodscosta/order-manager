@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Order } from "./Order";
 
 @Entity('users')
 export class User {
@@ -23,4 +24,7 @@ export class User {
 
     @Column({ type: 'boolean' })
     status: boolean;
+
+    @OneToMany(() => Order, (order) => order.user)
+    order: Order[];
 }
