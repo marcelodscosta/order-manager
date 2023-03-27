@@ -1,5 +1,6 @@
 import { IUser } from "../interfaces/IUser";
 import { userRepository } from "../repositories/userReposotory";
+import { ApiError } from "../utils/ApiError";
 
 export class UserService {
 
@@ -33,6 +34,7 @@ export class UserService {
             await userRepository.save(userUpdate);
             return userUpdate;
         }
+        return user;
 
     }
 

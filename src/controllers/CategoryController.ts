@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ICategory } from "../interfaces/ICategory";
 import { CategoryService } from "../services/CategoryService";
+import { ApiError } from "../utils/ApiError";
 
 export class CategoryController {
 
@@ -10,7 +11,7 @@ export class CategoryController {
 
         const { description }: ICategory = req.body;
         const newCategory = await service.create({ description });
-        return res.status(201).json(newCategory);
+        return res.status(201).json({ message: "User created successfully!!!" });
     }
 
     async findAll(req: Request, res: Response) {
@@ -28,6 +29,7 @@ export class CategoryController {
         const service = new CategoryService();
 
         const category = await service.findById(Number(id));
+        if (!category) throw new ApiError('Invalid Category', 200);
         return res.status(200).json(category);
     }
 
@@ -43,15 +45,18 @@ export class CategoryController {
         };
 
         const update = await service.update(updateCategory);
+
         res.status(201).json(update);
     }
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;
+        const message = 'Category deleted successfully';
 
         const service = new CategoryService();
 
-        const update = await service.delete(Number(id));
-        res.status(201).json(update);
+        const category = await service.delete(Number(id));
+        if (!category) throw new ApiError('Invalid Category', 200);
+        res.status(201).json(message);
     }
 };
