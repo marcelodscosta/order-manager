@@ -1,6 +1,7 @@
 import { IUser } from "../interfaces/IUser";
 import { userRepository } from "../repositories/userReposotory";
 import { ApiError } from "../utils/ApiError";
+import bcrypt from 'bcrypt';
 
 export class UserService {
 
@@ -11,10 +12,19 @@ export class UserService {
         status,
         password
     }: IUser) {
-        const newUser = userRepository.create({ name, cpf, email, status, password });
+
+        const userExists = await userRepository.findOne({ where: { email } });
+        if (userExists) throw new ApiError('User already exists', 400);
+
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        const newUser = userRepository.create({ name, cpf, email, status, password: passwordHash });
         await userRepository.save(newUser);
-        console.log(newUser);
-        return newUser;
+
+        const { password: _, ...user } = newUser;
+
+        return user;
     }
 
     async findAll() {
