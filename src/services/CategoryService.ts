@@ -1,11 +1,15 @@
 import { ICategory } from "../interfaces/ICategory";
 import { categoryRepository } from "../repositories/categoryRepository";
+import { categoryValidation } from "../validations/categoryValidation";
 
 
 export class CategoryService {
 
     // Create
     async create({ description }: ICategory) {
+
+        await categoryValidation.validate({ description });
+
         const newCategory = categoryRepository.create({ description });
         await categoryRepository.save(newCategory);
         return newCategory;
@@ -25,6 +29,9 @@ export class CategoryService {
     // Update
 
     async update({ id, description }: ICategory) {
+
+        await categoryValidation.validate({ description });
+
         const category = await categoryRepository.findOne({ where: { id: id } });
         if (category) {
             category.description = description;

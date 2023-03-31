@@ -11,7 +11,7 @@ export class CategoryController {
 
         const { description }: ICategory = req.body;
         const newCategory = await service.create({ description });
-        return res.status(201).json({ message: "User created successfully!!!" });
+        return res.status(201).json({ message: "Category created successfully!!!" });
     }
 
     async findAll(req: Request, res: Response) {
