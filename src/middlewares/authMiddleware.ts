@@ -19,7 +19,6 @@ export const authMiddleware = async (
 
     const token = authorization.split(' ')[1];
 
-
     const validateToken = jwt.verify(token, SECRET!)
 
 
