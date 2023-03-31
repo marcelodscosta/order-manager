@@ -2,6 +2,7 @@ import { IUser } from "../interfaces/IUser";
 import { userRepository } from "../repositories/userReposotory";
 import { ApiError } from "../utils/ApiError";
 import bcrypt from 'bcrypt';
+import { userValidation } from "../validations/userValidation";
 
 export class UserService {
 
@@ -12,6 +13,8 @@ export class UserService {
         status,
         password
     }: IUser) {
+
+        await userValidation.validate({ name, cpf, email, status, password });
 
         const userExists = await userRepository.findOne({ where: { email } });
         if (userExists) throw new ApiError('User already exists', 400);
@@ -45,6 +48,9 @@ export class UserService {
     }
 
     async update(id: number, { name, email, status, cpf, password }: IUser) {
+
+        await userValidation.validate({ name, cpf, email, status, password });
+
         const user = await userRepository.findOne({ where: { id } });
         if (user) {
             const userUpdate = Object.assign(user, { name, email, status, cpf, password });
