@@ -8,7 +8,7 @@ export const errorMiddleware = (
     next: NextFunction) => {
 
     const statusCode = error.statusCode ?? 500;
-    const message = error.message ? error.message : 'Internal Server Error';
+    const message = error.message;
 
     res.status(statusCode).json(message);
 
