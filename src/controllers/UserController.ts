@@ -22,7 +22,7 @@ export class UserController {
         const { id } = req.params;
         const service = new UserService();
         const user = await service.findById(Number(id));
-        if (user.length === 0) throw new ApiError('Invalid user', 200);
+        if (!user) throw new ApiError('Invalid user', 200);
         return res.status(200).json(user);
     }
 

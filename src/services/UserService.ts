@@ -28,13 +28,20 @@ export class UserService {
     }
 
     async findAll() {
-        const userList = await userRepository.find();
+        const userList = (await userRepository.find()).map(user => {
+            const { password: _, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+        });
         return userList;
     }
 
     async findById(id: number) {
-        const user = await userRepository.findBy({ id });
-        return user;
+        const user = await userRepository.findOne({ where: { id } });
+        if (user) {
+            const { password: _, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+        }
+        return;
     }
 
     async update(id: number, { name, email, status, cpf, password }: IUser) {
