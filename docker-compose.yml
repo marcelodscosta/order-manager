@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: ${DB_HOST}
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - my-network
+
+  app:
+    build: .
+    container_name: express-app
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASS}
+    volumes:
+      - app_data:/usr/src/app
+    networks:
+      - my-network
+
+volumes:
+  db_data:
+  app_data:
+
+
+networks:
+  my-network:
