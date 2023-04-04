@@ -38,6 +38,9 @@ export class UserService {
 
     async findById(id: number) {
         const user = await userRepository.findOne({ where: { id } });
+
+        if (!user) throw new ApiError('User does not exist', 400);
+
         if (user) {
             const { password: _, ...userWithoutPassword } = user;
             return userWithoutPassword;
@@ -48,6 +51,9 @@ export class UserService {
     async update(id: number, { name, email, status, cpf, password }: IUser) {
 
         const user = await userRepository.findOne({ where: { id } });
+
+        if (!user) throw new ApiError('User does not exist', 400);
+
         if (user) {
             const userUpdate = Object.assign(user, { name, email, status, cpf, password });
             await userRepository.save(userUpdate);
