@@ -32,13 +32,12 @@ services:
       DB_USER: root
       DB_PASSWORD: ${DB_PASS}
     volumes:
-      - app_data:/usr/src/app
+      - ${PWD}/:/backend
     networks:
       - my-network
 
 volumes:
   db_data:
-  app_data:
 
 
 networks:
