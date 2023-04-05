@@ -14,6 +14,10 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - my-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 5
 
   app:
     build: .
@@ -21,7 +25,8 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_HOST: ${DB_HOST}
       DB_USER: root
