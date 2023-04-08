@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { categoryValidation } from "../validations/categoryValidation";
+import { schemeCategory } from "../validations/schemeCategory";
 
 export const categoryInputValidate = async (
     req: Request,
     res: Response,
     next: NextFunction) => {
 
-    await categoryValidation.validate(req.body);
+    await schemeCategory.validate(req.body);
 
     next();
 }

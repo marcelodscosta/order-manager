@@ -1,6 +1,6 @@
 import { boolean, object, string } from 'yup';
 
-export const userValidation = object({
+export const schemeUser = object({
     name:
         string()
             .required('Name is required')

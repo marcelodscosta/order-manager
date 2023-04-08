@@ -1,6 +1,6 @@
 import { object, string } from 'yup';
 
-export const categoryValidation = object({
+export const schemeCategory = object({
     description:
         string()
             .required('Description is required')

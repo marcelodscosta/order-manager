@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { userValidation } from "../validations/userValidation";
+import { schemeUser } from "../validations/schemeUser";
 
 
 export const userInputValidate = async (
@@ -7,7 +7,7 @@ export const userInputValidate = async (
     _res: Response,
     next: NextFunction) => {
 
-    await userValidation.validate(req.body);
+    await schemeUser.validate(req.body);
 
 
     next();

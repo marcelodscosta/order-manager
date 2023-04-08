@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { customerValidation } from "../validations/customerValidation";
+import { schemeCustomer } from "../validations/schemeCustomer";
 
 export const customerInputValidate = async (req: Request, res: Response, next: NextFunction) => {
 
-    await customerValidation.validate(req.body);
+    await schemeCustomer.validate(req.body);
 
     next();
 }
