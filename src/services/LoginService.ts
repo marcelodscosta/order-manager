@@ -13,7 +13,7 @@ export class LoginService {
 
         const user = await userRepository.findOne({ where: { email } });
 
-        if (!user) throw new ApiError('invalid email or password', 400);
+        if (!user) throw new ApiError('invalid email or password', 401);
 
         const passwordValidation = await bcrypt.compare(password, user.password);
 

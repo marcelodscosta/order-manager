@@ -15,7 +15,7 @@ export class UserService {
 
 
         const userExists = await userRepository.findOne({ where: { email } });
-        if (userExists) throw new ApiError('User already exists', 400);
+        if (userExists) throw new ApiError('User already exists', 409);
 
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
@@ -23,23 +23,26 @@ export class UserService {
         const newUser = userRepository.create({ name, cpf, email, status, password: passwordHash });
         await userRepository.save(newUser);
 
-        const { password: _, ...user } = newUser;
+        const { password: _, order, ...user } = newUser;
 
         return user;
     }
 
     async findAll() {
-        const userList = (await userRepository.find()).map(user => {
-            const { password: _, ...userWithoutPassword } = user;
+        const users = (await userRepository.find()).map(user => {
+            const { password: _, order, ...userWithoutPassword } = user;
             return userWithoutPassword;
         });
-        return userList;
+
+        if (users.length === 0) throw new ApiError('No users found', 204);
+
+        return users;
     }
 
     async findById(id: number) {
         const user = await userRepository.findOne({ where: { id } });
 
-        if (!user) throw new ApiError('User does not exist', 400);
+        if (!user) throw new ApiError('User does not exist', 404);
 
         if (user) {
             const { password: _, ...userWithoutPassword } = user;
@@ -52,14 +55,11 @@ export class UserService {
 
         const user = await userRepository.findOne({ where: { id } });
 
-        if (!user) throw new ApiError('User does not exist', 400);
+        if (!user) throw new ApiError('User does not exist', 404);
 
-        if (user) {
-            const userUpdate = Object.assign(user, { name, email, status, cpf, password });
-            await userRepository.save(userUpdate);
-            return userUpdate;
-        }
-        return user;
+        const userUpdate = Object.assign(user, { name, email, status, cpf, password });
+        await userRepository.save(userUpdate);
+        return userUpdate;
 
     }
 
@@ -67,9 +67,10 @@ export class UserService {
 
         const user = await userRepository.findOne({ where: { id: id } });
 
-        if (user) {
-            await userRepository.remove(user);
-        }
+        if (!user) throw new ApiError('User not found', 404);
+
+        await userRepository.remove(user);
+
         return user;
     }
 }

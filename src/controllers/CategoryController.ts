@@ -11,7 +11,7 @@ export class CategoryController {
 
         const { description }: ICategory = req.body;
         const newCategory = await service.create({ description });
-        return res.status(201).json({ message: "Category created successfully!!!" });
+        return res.status(201).json(newCategory);
     }
 
     async findAll(req: Request, res: Response) {
@@ -27,9 +27,7 @@ export class CategoryController {
         const { id } = req.params;
 
         const service = new CategoryService();
-
         const category = await service.findById(Number(id));
-        if (!category) throw new ApiError('Invalid Category', 200);
         return res.status(200).json(category);
     }
 
@@ -51,12 +49,12 @@ export class CategoryController {
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;
-        const message = 'Category deleted successfully';
+        const message = `Category deleted successfully`;
 
         const service = new CategoryService();
 
-        const category = await service.delete(Number(id));
-        if (!category) throw new ApiError('Invalid Category', 200);
-        res.status(201).json(message);
+        await service.delete(Number(id));
+
+        res.status(200).json(message);
     }
 };
