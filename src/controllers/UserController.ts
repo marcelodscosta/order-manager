@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { IUser } from "../interfaces/IUser";
 import { UserService } from "../services/UserService";
-import { ApiError } from "../utils/ApiError";
 
 export class UserController {
 

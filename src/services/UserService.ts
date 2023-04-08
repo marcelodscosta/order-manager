@@ -44,11 +44,10 @@ export class UserService {
 
         if (!user) throw new ApiError('User does not exist', 404);
 
-        if (user) {
-            const { password: _, ...userWithoutPassword } = user;
-            return userWithoutPassword;
-        }
-        return;
+        const { password: _, order, ...userWithoutPassword } = user;
+
+        return userWithoutPassword;
+
     }
 
     async update(id: number, { name, email, status, cpf, password }: IUser) {
