@@ -5,10 +5,6 @@ export const schemeCustomer = object({
         string()
             .required('Name is required')
             .min(6, 'Name must be at least 3 characters long'),
-    cpf:
-        string()
-            .required('CPF is required')
-            .min(11, 'CPF must be at least 11 characters long'),
     email:
         string()
             .required('Email is required')
