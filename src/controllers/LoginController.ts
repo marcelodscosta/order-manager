@@ -1,17 +1,11 @@
 import { Request, Response } from "express";
-import { LoginService } from "../services/LoginService";
+import { LoginServiceSingleton } from '../shared/LoginServiceSingleton';
 
 export class LoginController {
 
-    async Login(req: Request, res: Response) {
-
-        const { email, password } = req.body;
-
-        const service = new LoginService();
-
-        const token = await service.Login({ email, password });
-
+    async Login(req: Request, res: Response): Promise<Response> {
+        const token = await LoginServiceSingleton
+            .getInstance().Login(req.body);
         return res.status(200).json({ token });
-
-    }
-}
+    };
+};

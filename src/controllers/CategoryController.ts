@@ -1,60 +1,35 @@
 import { Request, Response } from "express";
-import { ICategory } from "../interfaces/ICategory";
-import { CategoryService } from "../services/CategoryService";
-import { ApiError } from "../utils/ApiError";
+import { CategoryServiceSingleton } from "../shared/CategoryServiceSingleton";
 
 export class CategoryController {
-
-    async create(req: Request, res: Response) {
-
-        const service = new CategoryService();
-
-        const { description }: ICategory = req.body;
-        const newCategory = await service.create({ description });
+    public async create(req: Request, res: Response): Promise<Response> {
+        const newCategory = await CategoryServiceSingleton
+            .getInstance().create(req.body);
         return res.status(201).json(newCategory);
-    }
+    };
 
-    async findAll(req: Request, res: Response) {
-
-        const service = new CategoryService();
-
-        const categories = await service.findAll();
+    public async findAll(req: Request, res: Response): Promise<Response> {
+        const categories = await CategoryServiceSingleton
+            .getInstance().findAll();
         return res.status(200).json(categories);
-    }
+    };
 
-    async findById(req: Request, res: Response) {
-
-        const { id } = req.params;
-
-        const service = new CategoryService();
-        const category = await service.findById(Number(id));
+    public async findById(req: Request, res: Response): Promise<Response> {
+        const category = await CategoryServiceSingleton
+            .getInstance().findById(Number(req.params.id));
         return res.status(200).json(category);
-    }
+    };
 
-    async update(req: Request, res: Response) {
-        const { id } = req.params;
-        const { description } = req.body;
+    public async update(req: Request, res: Response): Promise<Response> {
+        const update = await CategoryServiceSingleton
+            .getInstance().update(Number(req.params.id), req.body);
+        return res.status(201).json(update);
+    };
 
-        const service = new CategoryService();
-
-        const updateCategory: ICategory = {
-            id: Number(id),
-            description
-        };
-
-        const update = await service.update(updateCategory);
-
-        res.status(201).json(update);
-    }
-
-    async delete(req: Request, res: Response) {
-        const { id } = req.params;
-        const message = `Category deleted successfully`;
-
-        const service = new CategoryService();
-
-        await service.delete(Number(id));
-
-        res.status(200).json(message);
-    }
+    public async delete(req: Request, res: Response): Promise<Response> {
+        await CategoryServiceSingleton
+            .getInstance().delete(Number(req.params.id));
+        return res.status(200)
+            .json({ message: `Category deleted successfully` });
+    };
 };
