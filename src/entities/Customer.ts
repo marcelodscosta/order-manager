@@ -17,9 +17,6 @@ export class Customer {
     status: boolean;
 
     @Column({ type: 'varchar', length: 200, nullable: true })
-    cpf: string;
-
-    @Column({ type: 'varchar', length: 200, nullable: true })
     cnpj: string;
 
     @OneToMany(() => Order, (order) => order.customer)
