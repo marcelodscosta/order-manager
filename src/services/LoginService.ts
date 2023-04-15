@@ -16,7 +16,9 @@ export class LoginService {
         const passwordValidation = await bcrypt
             .compare(login.password, user.password);
         if (!passwordValidation) throw new ApiError('invalid email or password', 400);
+
+        const { password, order, ...userOptimized } = user;
         const token = jwt.sign({ id: user.id }, SECRET!, { expiresIn: '1d' });
-        return token;
+        return { userOptimized, token };
     };
 };

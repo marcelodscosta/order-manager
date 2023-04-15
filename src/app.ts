@@ -1,6 +1,7 @@
 import 'express-async-errors';
 import "reflect-metadata";
 import express from 'express';
+const cors = require('cors');
 import { categoryRoute } from "./routes/categoryRoute";
 import { userRoute } from "./routes/userRout";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
@@ -9,6 +10,7 @@ import { customerRoute } from './routes/customerRoute';
 
 export const app = express();
 app.use(express.json());
+app.use(cors());
 
 
 app.use('/category', categoryRoute);
